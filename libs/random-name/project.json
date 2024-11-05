@@ -1,0 +1,32 @@
+{
+  "name": "random-name",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/random-name/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/random-name",
+        "tsConfig": "libs/random-name/tsconfig.lib.json",
+        "packageJson": "libs/random-name/package.json",
+        "main": "libs/random-name/src/index.ts",
+        "assets": [],
+        "webpackConfig": "libs/random-name/webpack.config.ts"
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "random-name:build",
+        "runBuildTargetDependencies": false,
+        "watch": false,
+        "port": 3001
+      }
+    }
+  }
+}
