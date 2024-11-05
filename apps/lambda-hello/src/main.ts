@@ -1,1 +1,8 @@
-console.log('Hello World');
+import { APIGatewayProxyResult } from 'aws-lambda';
+
+export const handler = async (): Promise<APIGatewayProxyResult> => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ hello: 'world' }),
+  };
+};
