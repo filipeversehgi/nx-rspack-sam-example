@@ -25,7 +25,8 @@
         "buildTarget": "random-name:build",
         "runBuildTargetDependencies": false,
         "watch": false,
-        "port": 3001
+        "port": 3001,
+        "allowedHosts": ".ngrok-free.app"
       }
     }
   }

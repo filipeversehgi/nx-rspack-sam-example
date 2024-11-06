@@ -1,13 +1,25 @@
-import { UniversalFederationPlugin } from '@module-federation/node';
 import { NxAppWebpackPlugin } from '@nx/webpack/app-plugin';
 import { join } from 'path';
+import * as webpack from 'webpack';
 import { WebpackConfiguration } from 'webpack-cli';
 
 module.exports = {
-  target: 'async-node',
   output: {
     path: join(__dirname, '../../dist/libs/random-name'),
+    module: true,
+    library: { type: 'module' },
+    chunkFormat: 'module',
+    chunkLoading: 'import',
+    uniqueName: `random-name`,
+    publicPath: 'auto',
   },
+  experiments: {
+    outputModule: true,
+  },
+  externalsType: 'module',
+  mode: 'production',
+  target: 'node20',
+  externals: [],
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',
@@ -18,13 +30,10 @@ module.exports = {
       optimization: false,
       outputHashing: 'none',
     }),
-    new UniversalFederationPlugin({
-      name: 'RandomName',
-      isServer: true,
-      dts: false,
-      library: { type: 'commonjs-module', name: 'RandomName' },
+    new webpack.container.ModuleFederationPlugin({
+      name: 'random-name',
+      library: { type: 'module' },
       filename: 'remoteEntry.js',
-      useRuntimePlugin: true,
       exposes: {
         '.': './src/index',
       },
