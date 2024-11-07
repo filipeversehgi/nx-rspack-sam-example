@@ -7,8 +7,10 @@ const { ModuleFederationPlugin } = require('@module-federation/enhanced');
 const config = {
   output: {
     path: join(__dirname, '../../dist/apps/lambda-hello'),
+    libraryTarget: 'commonjs2',
+    iife: false,
   },
-  target: 'async-node',
+  target: 'node',
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',
@@ -33,8 +35,7 @@ const config = {
         require.resolve('@module-federation/node/runtimePlugin'),
       ],
       remotes: {
-        'random-name':
-          'RandomName@https://f256-177-86-21-225.ngrok-free.app/remoteEntry.js',
+        'random-name': 'RandomName@http://localhost:3001/remoteEntry.js',
       },
     }),
   ],

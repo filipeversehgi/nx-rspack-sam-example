@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "postinstall": "patch-package",
     "build:hello": "nx build lambda-hello --skip-nx-cache",
     "sam:build:hello": "sam build -t dist/apps/lambda-hello/sam-template.yaml",
     "sam:invoke:hello": "sam local invoke -t dist/apps/lambda-hello/sam-template.yaml",

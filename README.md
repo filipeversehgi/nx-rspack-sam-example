@@ -2,9 +2,19 @@
 
 This project aims to use NX, AWS SAM Lambdas, Module Federation and NestJs together.
 
+This setup contains, for now:
+
+- NX Monorepo
+- NestJS API on Serverless Module
+    - This API consumes a simple federated package called random-name
+- Simple Lambda
+    - This lambda also consumes the federated package called random-name
+
 ### Steps to Run
 
-1. Install the packages
+1. Install the packages and apply the patches
+
+> The command `patch-package` will remove a faulty `node_modules/@module-federation/sdk/dist/package.json` that causes the Node MF import to malfunction. By removing it, the runtime properly uses the correct file that is `node_modules/@module-federation/sdk/package.json`.
 
 ```bash
 yarn install
@@ -28,15 +38,16 @@ yarn nx build my-nest-app --skip-nx-cache
 node --experimental-network-imports dist/apps/my-nest-app/main.js
 ```
 
-Then, you will see that an error is presented, where module-federation/sdk cannot be found on `dist/dist` path.
+## Lessons so Far
 
-4. Patch the SDK Module Federation Folder
+For lambda to work with webpack outputs, you need to add those two lines to `webpack.config.ts#output` section:
 
-```bash
-cp -R node_modules/@module-federation/sdk/dist/ node_modules/@module-federation/sdk/dist-2
-mv node_modules/@module-federation/sdk/dist-2 node_modules/@module-federation/sdk/dist/dist
+```js
+module.exports = {
+  output: {
+    ///...
+    libraryTarget: 'commonjs2',
+    iife: false,
+  }
+}
 ```
-
-5. Run again the `node` commands. You will see everything works.
-
-I just don't know why D:

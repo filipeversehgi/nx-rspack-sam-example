@@ -7,6 +7,8 @@ const { ModuleFederationPlugin } = require('@module-federation/enhanced');
 module.exports = {
   output: {
     path: join(__dirname, '../../dist/apps/my-nest-app'),
+    libraryTarget: 'commonjs2',
+    iife: false,
     // libraryTarget: 'module',
     // module: true,
     // library: { type: 'module' },
