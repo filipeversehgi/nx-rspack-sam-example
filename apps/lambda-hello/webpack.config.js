@@ -2,24 +2,12 @@ const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
 const { join } = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
+const { ModuleFederationPlugin } = require('@module-federation/enhanced');
 
 const config = {
   output: {
     path: join(__dirname, '../../dist/apps/lambda-hello'),
-    module: true,
-    library: { type: 'module' },
-    chunkFormat: 'module',
-    chunkLoading: 'import',
-    filename: '[name].mjs',
-    uniqueName: 'lambda-hello',
   },
-  experiments: {
-    outputModule: true,
-  },
-  // externalsType: 'module',
-  mode: 'production',
-  target: 'node20',
-  externals: [],
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',
@@ -37,12 +25,12 @@ const config = {
         { from: 'sam-template.yaml', to: './' },
       ],
     }),
-    new webpack.container.ModuleFederationPlugin({
+    new ModuleFederationPlugin({
       name: 'lambda_hello',
-      library: { type: 'module' },
+      dts: false,
       remotes: {
         'random-name':
-          'https://9098-177-86-21-225.ngrok-free.app/remoteEntry.js',
+          'RandomName@https://896d-177-86-21-225.ngrok-free.app/remoteEntry.js',
       },
     }),
   ],

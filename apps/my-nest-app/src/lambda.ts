@@ -32,6 +32,4 @@ const handler = async (event: any, context: Context, callback: any) => {
   return server(event, context, callback);
 };
 
-console.log('- Hanler exists!', handler);
-
 module.exports.handler = handler;

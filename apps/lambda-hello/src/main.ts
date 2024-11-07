@@ -1,6 +1,7 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
 
 export const handler = async (): Promise<APIGatewayProxyResult> => {
+  console.log('Hello from Lambda!');
   const { randomName } = await import('random-name');
 
   return {
@@ -8,3 +9,5 @@ export const handler = async (): Promise<APIGatewayProxyResult> => {
     body: JSON.stringify({ hello: randomName() }),
   };
 };
+
+handler().then(console.log);

@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-lambda/random-name": ["libs/random-name/src/index.ts"]
+      "random-name": ["libs/random-name/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
