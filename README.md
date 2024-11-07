@@ -1,13 +1,17 @@
 # NxLambda
 
+> ### :warning: ATTENTION :warning:
+> 
+> Use the branch `feat/npm-faulty-dist` to check the issue with `@module-federation/sdk` build duplicated package.json
+
 This project aims to use NX, AWS SAM Lambdas, Module Federation and NestJs together.
 
 This setup contains, for now:
 
-- NX Monorepo
-- NestJS API on Serverless Module
+- 🚀 NX Monorepo
+- 🛡️ NestJS API on Serverless Module
     - This API consumes a simple federated package called random-name
-- Simple Lambda
+- 🌀 Simple Lambda
     - This lambda also consumes the federated package called random-name
 
 ### Steps to Run
