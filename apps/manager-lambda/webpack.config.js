@@ -3,12 +3,10 @@ const { join } = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const { ModuleFederationPlugin } = require('@module-federation/enhanced');
-const { UniversalFederationPlugin } = require('@module-federation/node');
 
 module.exports = {
-  target: 'async-node',
   output: {
-    path: join(__dirname, '../../dist/apps/my-nest-app'),
+    path: join(__dirname, '../../dist/apps/manager-lambda'),
     libraryTarget: 'commonjs2',
     iife: false,
     // libraryTarget: 'module',
@@ -26,7 +24,7 @@ module.exports = {
     new NxAppWebpackPlugin({
       target: 'node',
       compiler: 'tsc',
-      main: './src/lambda.ts',
+      main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
       assets: ['./src/assets'],
       optimization: false,
@@ -47,22 +45,16 @@ module.exports = {
     //     '.': './src/index',
     //   },
     // }),
-    new UniversalFederationPlugin({
-      name: 'MyNestAPI',
-      // runtimePlugins: [
-      //   require.resolve('@module-federation/node/runtimePlugin'),
-      // ],
-      // library: { type: 'module' },
-      // remotes: {
-      //   'random-name': 'RandomName@http://localhost:3001/remoteEntry.js',
-      // },
-      isServer: true,
+    new ModuleFederationPlugin({
+      name: 'manager-lambda',
       dts: false,
-      library: { type: 'commonjs-module', name: 'MyNestAPI' },
-      useRuntimePlugin: true,
-      filename: 'remoteEntry.js',
-      exposes: {
-        '.': './src/app/app.module',
+      runtimePlugins: [
+        require.resolve('@module-federation/node/runtimePlugin'),
+      ],
+      // library: { type: 'module' },
+      remotes: {
+        'my-nest-api':
+          'MyNestAPI@https://be9d-177-86-21-225.ngrok-free.app/remoteEntry.js',
       },
     }),
     // new webpack.container.ModuleFederationPlugin({

@@ -11,7 +11,8 @@
     "build:api": "nx build my-nest-app --skip-nx-cache",
     "sam:build:api": "sam build -t dist/apps/my-nest-app/sam-template.yaml",
     "sam:invoke:api": "sam local invoke -t dist/apps/my-nest-app/sam-template.yaml",
-    "dev:api": "$npm_execpath run-s build:api sam:build:api sam:invoke:api"
+    "dev:api": "$npm_execpath run-s build:api sam:build:api sam:invoke:api",
+    "sam:build:manager": "sam build -t dist/apps/manager-lambda/sam-template.yaml"
   },
   "private": true,
   "dependencies": {

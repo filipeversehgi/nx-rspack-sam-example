@@ -1,0 +1,39 @@
+{
+  "name": "manager-lambda",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/manager-lambda/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/manager-lambda",
+        "main": "apps/manager-lambda/src/main.ts",
+        "tsConfig": "apps/manager-lambda/tsconfig.app.json",
+        "assets": ["apps/manager-lambda/src/assets"],
+        "compiler": "tsc",
+        "target": "node",
+        "webpackConfig": "apps/manager-lambda/webpack.config.js"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "manager-lambda:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "manager-lambda:build:development"
+        },
+        "production": {
+          "buildTarget": "manager-lambda:build:production"
+        }
+      }
+    }
+  }
+}

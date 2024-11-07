@@ -19,20 +19,15 @@
       }
     },
     "serve": {
-      "executor": "@nx/js:node",
+      "executor": "@nx/webpack:dev-server",
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
         "buildTarget": "my-nest-app:build",
-        "runBuildTargetDependencies": false
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "my-nest-app:build:development"
-        },
-        "production": {
-          "buildTarget": "my-nest-app:build:production"
-        }
+        "runBuildTargetDependencies": false,
+        "watch": false,
+        "port": 3002,
+        "allowedHosts": ".ngrok-free.app"
       }
     }
   }
