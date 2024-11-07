@@ -51,8 +51,7 @@ module.exports = {
       ],
       // library: { type: 'module' },
       remotes: {
-        'random-name':
-          'RandomName@https://896d-177-86-21-225.ngrok-free.app/remoteEntry.js',
+        'random-name': 'RandomName@http://localhost:3001/remoteEntry.js',
       },
     }),
     // new webpack.container.ModuleFederationPlugin({

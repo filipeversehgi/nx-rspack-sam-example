@@ -16,7 +16,7 @@ yarn install
 yarn nx serve random-name --verbose
 ```
 
-3. Build the Lambda Test or the NestJs API Test
+3. In another terminal tab, build the Lambda Test or the NestJs API Test
 
 ```bash
 # For the Lambda Test
@@ -37,4 +37,6 @@ cp -R node_modules/@module-federation/sdk/dist/ node_modules/@module-federation/
 mv node_modules/@module-federation/sdk/dist-2 node_modules/@module-federation/sdk/dist/dist
 ```
 
-5. Run again the `node` commands. You will see everything works
+5. Run again the `node` commands. You will see everything works.
+
+I just don't know why D:

@@ -29,8 +29,7 @@ const config = {
       name: 'lambda_hello',
       dts: false,
       remotes: {
-        'random-name':
-          'RandomName@https://896d-177-86-21-225.ngrok-free.app/remoteEntry.js',
+        'random-name': 'RandomName@http://localhost:3001/remoteEntry.js',
       },
     }),
   ],
