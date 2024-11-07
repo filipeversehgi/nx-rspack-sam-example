@@ -12,7 +12,7 @@ module.exports = {
     // chunkFormat: 'module',
     // chunkLoading: 'import',
     // uniqueName: `random-name`,
-    // publicPath: 'auto',
+    publicPath: 'auto',
   },
   // experiments: {
   //   outputModule: true,
@@ -43,15 +43,9 @@ module.exports = {
       name: 'RandomName',
       isServer: true,
       dts: false,
-      shared: {
-        '@module-federation/sdk': {
-          singleton: true,
-          requiredVersion: false,
-        },
-      },
       library: { type: 'commonjs-module', name: 'RandomName' },
+      useRuntimePlugin: false,
       filename: 'remoteEntry.js',
-      useRuntimePlugin: true,
       exposes: {
         '.': './src/lib/random-name.ts',
       },

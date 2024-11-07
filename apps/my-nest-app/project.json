@@ -10,7 +10,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/my-nest-app",
-        "main": "apps/my-nest-app/src/main.ts",
+        "main": "apps/my-nest-app/src/lambda.ts",
         "tsConfig": "apps/my-nest-app/tsconfig.app.json",
         "assets": ["apps/my-nest-app/src/assets"],
         "compiler": "tsc",

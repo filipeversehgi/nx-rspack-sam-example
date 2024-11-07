@@ -1,13 +1,24 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
 
-export const handler = async (): Promise<APIGatewayProxyResult> => {
+const handler = async (): Promise<APIGatewayProxyResult> => {
   console.log('Hello from Lambda!');
-  const { randomName } = await import('random-name');
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ hello: randomName() }),
-  };
+  try {
+    const { randomName } = await import('random-name');
+    console.log('Random name!', randomName());
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ hello: randomName() }),
+    };
+  } catch (err) {
+    console.log(err);
+
+    return {
+      statusCode: 500,
+      body: 'Error!',
+    };
+  }
 };
 
-handler().then(console.log);
+module.exports.handler = handler;
