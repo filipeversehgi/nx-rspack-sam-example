@@ -51,3 +51,20 @@ module.exports = {
   }
 }
 ```
+
+To run those functions using AWS SAM, you need to:
+
+1. Update the webpack.config.js module federation config on the HOSTS to fetch the remotes from a public https URL instead of localhost. This happens due the fact that SAM uses docker and the localhost for the docker instance is the instance itself, not your machine. (Suggestion: use Ngrok and run `ngrok http http://localhost:3001`), then get the URL and update the config.
+
+2. Run those commands, after
+```bash
+yarn nx build my-nest-app --skip-nx-cache
+# or: yarn nx build lambda-hello --skip-nx-cache
+
+yarn sam:build:api
+# or: yarn sam:build:hello
+
+cp -r node_modules/ .aws-sam/build/MyFunctionNameFunction/
+
+sam local start-api
+```
