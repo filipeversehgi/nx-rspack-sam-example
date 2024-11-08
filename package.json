@@ -11,7 +11,10 @@
     "build:api": "nx build my-nest-app --skip-nx-cache",
     "sam:build:api": "sam build -t dist/apps/my-nest-app/sam-template.yaml",
     "sam:invoke:api": "sam local invoke -t dist/apps/my-nest-app/sam-template.yaml",
-    "dev:api": "$npm_execpath run-s build:api sam:build:api sam:invoke:api"
+    "dev:api": "$npm_execpath run-s build:api sam:build:api sam:invoke:api",
+    "random-name:serve": "nx serve random-name --verbose",
+    "my-nest-app:serve": "nx serve my-nest-app --verbose",
+    "lambda-hello:serve": "nx serve lambda-hello --verbose"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +25,7 @@
     "@vendia/serverless-express": "^4.12.6",
     "aws-serverless-express": "^3.4.0",
     "axios": "^1.6.0",
+    "express": "^4.21.1",
     "patch-package": "^8.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",

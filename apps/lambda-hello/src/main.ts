@@ -1,8 +1,9 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
+import { loadRemote } from '@module-federation/runtime';
 
 const handler = async (): Promise<APIGatewayProxyResult> => {
   console.log('Hello from Lambda!');
-  const { randomName } = await import('random-name');
+  const { randomName } = await import('my-nest-api');
 
   // try {
   //   const { randomName } = await import('random-name');
@@ -28,3 +29,11 @@ const handler = async (): Promise<APIGatewayProxyResult> => {
 };
 
 export { handler };
+
+async function bootstrapTest() {
+  const { bootstrap } = await loadRemote<{ bootstrap: () => Promise<void> }>('my-nest-api');
+
+  await bootstrap();
+}
+
+bootstrapTest();
