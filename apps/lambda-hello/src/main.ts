@@ -1,11 +1,77 @@
-import { loadRemote } from '@module-federation/runtime';
+const { loadRemote, init } = require('@module-federation/runtime');
 import { APIGatewayProxyResult, Context } from 'aws-lambda';
 
-const bootstrappedModules = {};
+const bootstrappedModules: Record<
+  string,
+  {
+    lastAccessTime: number;
+    module: any;
+  }
+> = {};
 
-const exampleManifest = {
-  abcdef1234: 'my-nest-api',
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { parse } from 'yaml';
+
+export class ModuleFederationUtil {
+  public static init(hashmap: Record<string, string>) {
+    console.log({
+      name: 'lambda_hello',
+      remotes: Object.entries(hashmap).map(([name, entry]) => ({
+        name,
+        entry,
+      })),
+    });
+
+    init({
+      name: 'lambda_hello',
+      remotes: Object.entries(hashmap).map(([name, entry]) => ({
+        name,
+        entry,
+      })),
+    });
+  }
+
+  public static loadRemote(name: string) {
+    console.log('- Trying to load remote', name);
+    return loadRemote(name);
+  }
+
+  public static loadAndExtract(name: string, moduleName: string) {
+    return ModuleFederationUtil.loadRemote(name).then((m) => m![moduleName]);
+  }
+
+  // public static registerRemotes(
+  //   remotes: Parameters<typeof this.instance.registerRemotes>[0]
+  // ) {
+  //   return this.instance.registerRemotes(remotes, { force: true });
+  // }
+}
+
+/**
+ * Parses Manifest on Boot and generates a hashmap
+ */
+const manifestText = readFileSync(
+  join(dirname(__filename), 'manifest.yml'),
+  'utf8'
+);
+
+const manifestList: { hosts: { key: string; url: string }[] } =
+  parse(manifestText);
+
+const manifestHashmap = manifestList.hosts.reduce(
+  (acc: Record<string, string>, cur) => {
+    acc[cur.key] = cur.url;
+    return acc;
+  },
+  {}
+);
+
+const getModulePath = async (hostHash: string) => {
+  return manifestHashmap[hostHash];
 };
+
+ModuleFederationUtil.init(manifestHashmap);
 
 const handler = async (
   event: any,
@@ -16,9 +82,11 @@ const handler = async (
    * Gets the subdomain, that represents the "host-module-id" in the manifest
    */
   const hostHash = event.requestContext.domainName.split('.')[0];
-  const moduleId = exampleManifest[hostHash];
+  const modulePath = await getModulePath(hostHash);
 
-  if (!moduleId)
+  console.log('module-path:', modulePath);
+
+  if (!modulePath)
     return {
       statusCode: 500,
       body: 'Federated host not found with requested subdomain hash',
@@ -27,18 +95,31 @@ const handler = async (
   /**
    * Downloads, Boots and Caches the Remote Module
    */
-  if (!bootstrappedModules[moduleId]) {
-    const { bootstrap } = await loadRemote<{ bootstrap: () => Promise<void> }>(
-      moduleId
+  if (!bootstrappedModules[modulePath]) {
+    console.log('- Load and Extract');
+    const bootstrapRemoteModuleFn = await ModuleFederationUtil.loadAndExtract(
+      hostHash,
+      'bootstrap'
     );
-    const serverInstance = await bootstrap();
-    bootstrappedModules[moduleId] = serverInstance;
+    console.log('- moduleRef', bootstrapRemoteModuleFn);
+    // const bootstrap = await ModuleFederationUtil.loadAndExtract(
+    //   hostHash,
+    //   'bootstrap'
+    // );
+    // console.log({ bootstrap });
+    const serverInstance = await bootstrapRemoteModuleFn();
+    bootstrappedModules[modulePath] = {
+      lastAccessTime: +new Date(),
+      module: serverInstance,
+    };
   }
+
+  bootstrappedModules[modulePath].lastAccessTime = +new Date();
 
   /**
    * Returns
    */
-  return bootstrappedModules[moduleId](event, context, callback);
+  return bootstrappedModules[modulePath].module(event, context, callback);
 };
 
 handler({
@@ -97,7 +178,7 @@ handler({
   requestContext: {
     accountId: '123456789012',
     apiId: '1234567890',
-    domainName: 'abcdef1234.localhost:3000',
+    domainName: 'dev.localhost:3000',
     extendedRequestId: null,
     httpMethod: 'GET',
     identity: {
