@@ -5,6 +5,23 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/lambda-hello",
+        "main": "apps/lambda-hello/src/main.ts",
+        "tsConfig": "apps/lambda-hello/tsconfig.app.json",
+        "assets": [
+          "apps/lambda-hello/src/assets"
+        ],
+        "compiler": "tsc",
+        "target": "node",
+        "webpackConfig": "apps/lambda-hello/webpack.config.ts"
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",

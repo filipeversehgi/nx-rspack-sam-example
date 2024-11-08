@@ -1,0 +1,6 @@
+hosts:
+- key: dev
+  url: http://localhost:3002/remoteEntry.js
+  
+- key: abcdef1234
+  url: https://filipe_scal_io_145-my-nest-app-nx-rspack-sam-exam-3c421ba7e-ze.zephyrcloud.app/remoteEntry.js

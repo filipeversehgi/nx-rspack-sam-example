@@ -1,1 +1,1 @@
-declare module 'random-name';
+declare module 'my-nest-api';
