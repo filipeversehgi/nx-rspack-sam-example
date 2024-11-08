@@ -2,32 +2,19 @@
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import serverlessExpress from '@vendia/serverless-express';
-import { Context, Handler } from 'aws-lambda';
-import * as express from 'express';
+import express from 'express';
 
 import { AppModule } from './app/app.module';
 
-let cachedServer: Handler;
+export async function bootstrap() {
+  const expressApp = express();
+  const nestApp = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(expressApp)
+  );
 
-async function bootstrap() {
-  if (!cachedServer) {
-    const expressApp = express();
-    const nestApp = await NestFactory.create(
-      AppModule,
-      new ExpressAdapter(expressApp)
-    );
+  nestApp.enableCors();
+  await nestApp.init();
 
-    nestApp.enableCors();
-
-    await nestApp.init();
-
-    cachedServer = serverlessExpress({ app: expressApp });
-  }
-
-  return cachedServer;
+  return serverlessExpress({ app: expressApp });
 }
-
-export const handler = async (event: any, context: Context, callback: any) => {
-  const server = await bootstrap();
-  return server(event, context, callback);
-};

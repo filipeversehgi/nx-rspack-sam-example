@@ -1,5 +1,5 @@
-import { composePlugins, withNx } from '@nx/webpack';
 import { withNodeFederation } from '@nx-lambda/shared';
+import { composePlugins, withNx } from '@nx/webpack';
 
 export default composePlugins(
   withNx(),
@@ -10,12 +10,12 @@ export default composePlugins(
     library: { type: 'commonjs-module' },
     filename: 'remoteEntry.js',
     exposes: {
-      '.': './src/main'
+      '.': './src/lambda',
     },
     // remotes: ['random-name'],
     remotes: {
-      'RandomName': 'RandomName@http://localhost:3001/remoteEntry.js'
-    }
+      RandomName: 'RandomName@http://localhost:3001/remoteEntry.js',
+    },
   }),
-  config => config,
-)
+  (config) => config
+);

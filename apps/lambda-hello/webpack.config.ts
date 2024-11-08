@@ -1,5 +1,5 @@
-import { composePlugins, withNx } from '@nx/webpack';
 import { withNodeFederation } from '@nx-lambda/shared';
+import { composePlugins, withNx } from '@nx/webpack';
 
 export default composePlugins(
   withNx(),
@@ -12,5 +12,12 @@ export default composePlugins(
     useRuntimePlugin: true,
     isServer: true,
   }),
-  config => config,
-)
+  (config) => {
+    if (config.output) {
+      config.output.libraryTarget = 'commonjs2';
+      config.output.iife = false;
+    }
+
+    return config;
+  }
+);
