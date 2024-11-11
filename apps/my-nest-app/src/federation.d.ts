@@ -1,5 +1,5 @@
-declare module 'random-name';
+declare module 'random-color';
 
-interface RandomNameModule {
-  randomName: () => string;
+interface RandomColorName {
+  randomColor: () => string;
 }

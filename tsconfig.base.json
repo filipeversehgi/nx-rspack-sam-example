@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@nx-lambda/random-color": ["libs/random-color/src/index.ts"],
       "@nx-lambda/shared": ["libs/shared/src/index.ts"]
     }
   },

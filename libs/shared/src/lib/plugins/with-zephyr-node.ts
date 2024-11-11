@@ -1,5 +1,5 @@
-import { isModuleFederationPlugin } from 'zephyr-webpack-plugin/dist/lib/utils/is-mf-plugin';
 import { Configuration } from 'webpack';
+import { isModuleFederationPlugin } from 'zephyr-webpack-plugin/dist/lib/utils/is-mf-plugin';
 
 interface MfPlugin {
   _options: {
@@ -28,5 +28,9 @@ export function withZephyrNode() {
 function parseMeta(remoteFunction: string) {
   const remoteUrlRegex = /const remote_entry_url\s*=\s*'([^']+)'/;
 
-  return remoteFunction.match(remoteUrlRegex)?.[1];
+  const result = remoteFunction.match(remoteUrlRegex)?.[1];
+
+  console.log('remote:', result);
+
+  return result || remoteFunction;
 }

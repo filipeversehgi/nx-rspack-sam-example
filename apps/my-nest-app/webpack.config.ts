@@ -4,7 +4,7 @@ import { withZephyr } from 'zephyr-webpack-plugin';
 
 export default composePlugins(
   withNx({
-    publicPath: 'auto'
+    publicPath: 'auto',
   }),
   withNodeFederation({
     name: 'my-nest-app',
@@ -18,10 +18,10 @@ export default composePlugins(
     },
     // remotes: ['random-name'],
     remotes: {
-      'random-name': 'random-name@http://localhost:3001/remoteEntry.js',
+      'random-color': 'random-color@http://localhost:3001/remoteEntry.js',
     },
   }),
   withZephyr(),
   withZephyrNode(),
-  (config) => config,
+  (config) => config
 );

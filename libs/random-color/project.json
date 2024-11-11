@@ -1,22 +1,22 @@
 {
-  "name": "random-name",
+  "name": "random-color",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/random-name/src",
-  "projectType": "application",
+  "sourceRoot": "libs/random-color/src",
+  "projectType": "library",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/random-name",
-        "tsConfig": "apps/random-name/tsconfig.app.json",
-        "packageJson": "apps/random-name/package.json",
-        "main": "apps/random-name/src/index.ts",
+        "outputPath": "dist/libs/random-color",
+        "tsConfig": "libs/random-color/tsconfig.lib.json",
+        "packageJson": "libs/random-color/package.json",
+        "main": "libs/random-color/src/index.ts",
         "assets": [],
         "compiler": "tsc",
         "target": "node",
-        "webpackConfig": "apps/random-name/webpack.config.ts"
+        "webpackConfig": "libs/random-color/webpack.config.ts"
       }
     },
     "serve": {
@@ -24,7 +24,7 @@
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
-        "buildTarget": "random-name:build",
+        "buildTarget": "random-color:build",
         "runBuildTargetDependencies": false,
         "watch": false,
         "port": 3001,
