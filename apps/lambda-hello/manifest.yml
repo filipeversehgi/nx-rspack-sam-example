@@ -10,3 +10,11 @@ hosts:
 - path: my-nest-app
   name: my-nest-app
   url: https://filipe_scal_io-03fmx251w1_285-my-nest-app-nx-rspa-21471290b-ze.zephyrcloud.app/remoteEntry.js
+
+- path: new-version
+  name: my-nest-app
+  url: https://filipe_scal_io-03fmx251w1_329-my-nest-app-nx-rspa-d8f1046d2-ze.zephyrcloud.app/remoteEntry.js
+
+- path: third-version
+  name: my-nest-app
+  url: https://filipe_scal_io-03fmx251w1_331-my-nest-app-nx-rspa-5d09ef87e-ze.zephyrcloud.app/remoteEntry.js
