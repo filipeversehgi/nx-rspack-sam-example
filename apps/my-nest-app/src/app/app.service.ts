@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { loadRemote } from '@module-federation/runtime';
 
 @Injectable()
 export class AppService {
@@ -7,9 +8,9 @@ export class AppService {
 
     let randomNameVal = 'not-defined';
     try {
-      const mod = await import('@nx-lambda/random-name');
-      console.log('-mod', mod);
-      randomNameVal = mod.randomName();
+      const { randomName } = await loadRemote<RandomNameModule>('random-name');
+      console.log('-mod', randomName);
+      randomNameVal = randomName();
     } catch (error) {
       console.error('- Random Name Error');
       console.log(error);

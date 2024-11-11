@@ -1,36 +1,28 @@
-import { withNodeFederation } from '@nx-lambda/shared';
+import { withNodeFederation, withZephyrNode } from '@nx-lambda/shared';
 import { composePlugins, withNx } from '@nx/webpack';
 import { withZephyr } from 'zephyr-webpack-plugin';
 
 export default composePlugins(
-  withNx(),
+  withNx({
+    target: 'async-node',
+    publicPath: 'auto'
+  }),
   withNodeFederation({
-    name: 'my-nest-api',
+    name: 'my-nest-app',
     dts: false,
     isServer: true,
-    remoteType: 'script',
     library: { type: 'commonjs-module' },
     useRuntimePlugin: true,
     filename: 'remoteEntry.js',
     exposes: {
-      '.': './src/lambda',
+      '.': './src/main',
     },
-    // remotes: ['@nx-lambda/random-name'],
+    // remotes: ['random-name'],
     remotes: {
-      '@nx-lambda/random-name':
-        '@nx-lambda/random-name@http://localhost:3001/remoteEntry.js',
+      'random-name': 'random-name@http://localhost:3001/remoteEntry.js',
     },
   }),
-
   withZephyr(),
-  (config) => {
-    if (config.output) {
-      config.output.publicPath = 'auto';
-      config.output.library = { type: 'commonjs-module' };
-    }
-
-    config.target = 'async-node';
-
-    return config;
-  }
+  withZephyrNode(),
+  (config) => config,
 );

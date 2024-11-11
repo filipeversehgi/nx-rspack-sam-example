@@ -1,1 +1,5 @@
-declare module '@nx-lambda/random-name';
+declare module 'random-name';
+
+interface RandomNameModule {
+  randomName: () => string;
+}
