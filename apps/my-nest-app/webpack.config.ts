@@ -4,7 +4,6 @@ import { withZephyr } from 'zephyr-webpack-plugin';
 
 export default composePlugins(
   withNx({
-    target: 'async-node',
     publicPath: 'auto'
   }),
   withNodeFederation({
