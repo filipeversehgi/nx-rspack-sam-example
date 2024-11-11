@@ -12,7 +12,7 @@
       ],
       "options": {
         "outputPath": "dist/apps/lambda-hello",
-        "main": "apps/lambda-hello/src/main.ts",
+        "main": "apps/lambda-hello/src/main-lambda.ts",
         "tsConfig": "apps/lambda-hello/tsconfig.app.json",
         "assets": [
           "apps/lambda-hello/src/assets"

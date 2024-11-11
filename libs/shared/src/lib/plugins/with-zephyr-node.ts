@@ -12,14 +12,17 @@ export function withZephyrNode() {
     const mfPlugin = config.plugins?.find(
       isModuleFederationPlugin
     ) as unknown as MfPlugin;
-    if (mfPlugin) {
-      Object.keys(mfPlugin._options.remotes).forEach(
-        (key) =>
-          (mfPlugin._options.remotes[key] = parseMeta(
-            mfPlugin._options.remotes[key]
-          )!)
-      );
+
+    if (!mfPlugin || !mfPlugin._options.remotes) {
+      return config;
     }
+
+    Object.keys(mfPlugin._options.remotes).forEach(
+      (key) =>
+        (mfPlugin._options.remotes[key] = parseMeta(
+          mfPlugin._options.remotes[key]
+        )!)
+    );
 
     return config;
   };

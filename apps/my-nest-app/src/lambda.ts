@@ -7,6 +7,7 @@ import express from 'express';
 import { AppModule } from './app/app.module';
 
 export async function bootstrap() {
+  console.log('- Bootstraping lambda');
   const expressApp = express();
   const nestApp = await NestFactory.create(
     AppModule,

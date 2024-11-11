@@ -18,9 +18,9 @@ export default composePlugins(
     useRuntimePlugin: true,
     isServer: true,
     // remotes: ['my-nest-app'],
-    remotes: {
-      'my-nest-app': 'my-nest-app@http://localhost:3002/remoteEntry.js',
-    },
+    // remotes: {
+    //   'my-nest-app': 'my-nest-app@http://localhost:3002/remoteEntry.js',
+    // },
   }),
   withZephyr(),
   withZephyrNode(),

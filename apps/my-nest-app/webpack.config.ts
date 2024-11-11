@@ -14,7 +14,7 @@ export default composePlugins(
     useRuntimePlugin: true,
     filename: 'remoteEntry.js',
     exposes: {
-      '.': './src/main',
+      '.': './src/lambda',
     },
     // remotes: ['random-name'],
     remotes: {
