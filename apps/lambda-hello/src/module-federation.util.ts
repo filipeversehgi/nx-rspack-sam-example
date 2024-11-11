@@ -23,15 +23,23 @@ export class ModuleFederationUtil {
   }
 
   public static loadRemote(name: string) {
-    console.log('- Trying to load remote', name);
     return loadRemote(name);
   }
 
-  public static loadAndExtract(name: string, moduleName: string) {
-    return ModuleFederationUtil.loadRemote(name).then((m) => m![moduleName]);
+  public static async loadAndExtract(name: string, moduleName: string) {
+    try {
+      const module = await ModuleFederationUtil.loadRemote(name);
+      if (!module) return null;
+
+      return module[moduleName];
+    } catch (error) {
+      return null;
+    }
   }
 
   public static registerRemotes(remotes: ManifestItem[]) {
-    return registerRemotes(remotes.map(this.parseManifestItem));
+    return registerRemotes(remotes.map(this.parseManifestItem), {
+      force: true,
+    });
   }
 }

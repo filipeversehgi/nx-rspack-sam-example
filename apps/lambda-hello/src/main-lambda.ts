@@ -8,7 +8,6 @@ const bootstrappedModulesByPath: Record<
   }
 > = {};
 
-import { getHandlerPayload } from './handler-payload';
 import { parseManifest } from './manifest-parser';
 import { ModuleFederationUtil } from './module-federation.util';
 
@@ -27,12 +26,16 @@ const handler = async (
   const hostHash = event.requestContext.domainName.split('.')[0];
   const remoteModule = await getModuleForRequest(hostHash);
 
-  console.log('Remote Module:', remoteModule);
-
   if (!remoteModule)
     return {
       statusCode: 500,
-      body: 'Federated host not found with requested subdomain hash',
+      headers: {
+        contentType: 'application/json',
+      },
+      body: JSON.stringify({
+        message: 'Module not found',
+        availableModules: manifestHashmap,
+      }),
     };
 
   /**
@@ -40,12 +43,23 @@ const handler = async (
    */
   if (!bootstrappedModulesByPath[remoteModule.path]) {
     ModuleFederationUtil.registerRemotes([remoteModule]);
-    console.log('- Load and Extract');
 
     const bootstrapRemoteModuleFn = await ModuleFederationUtil.loadAndExtract(
       hostHash,
       'bootstrap'
     );
+
+    if (!bootstrapRemoteModuleFn) {
+      return {
+        statusCode: 500,
+        headers: {
+          contentType: 'application/json',
+        },
+        body: JSON.stringify({
+          message: 'Could not load module',
+        }),
+      };
+    }
 
     const serverInstance = await bootstrapRemoteModuleFn();
     bootstrappedModulesByPath[remoteModule.path] = {
@@ -66,6 +80,6 @@ const handler = async (
   );
 };
 
-handler(getHandlerPayload('dev'));
+// handler(getHandlerPayload('dev'));
 
 export { handler };
